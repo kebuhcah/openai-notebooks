@@ -1,2 +1,4 @@
 .env
 .ipynb_checkpoints/
+data/language_id.csv
+.DS_Store
