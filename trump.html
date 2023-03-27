@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Prompt: Write some code to produce an SVG image of Donald Trump giving a speech -->
+<style>
+  .trump-speech { fill: none; stroke: black; stroke-width: 2; }
+  .trump-hair { fill: #FFC000; }
+  .trump-face { fill: #FFCC99; }
+  .trump-suit { fill: #000; }
+  .trump-tie { fill: red; }
+  .trump-mouth { fill: #990000; }
+  .podium { fill: #333; }
+  .mic { fill: black; }
+  .speech-text { font-family: Arial, sans-serif; font-size: 14px; fill: #333; }
+</style>
+</head>
+<body>
+<svg width="400" height="400">
+  <!-- Trump's hair -->
+  <path class="trump-hair" d="M90,100 Q100,80 130,90 L210,90 Q240,80 250,100 L230,150 L90,150 Z" />
+
+  <!-- Trump's face -->
+  <circle class="trump-face" cx="170" cy="170" r="80" />
+
+  <!-- Trump's suit -->
+  <path class="trump-suit" d="M100,250 L110,220 Q170,180 230,220 L240,250 Z" />
+
+  <!-- Trump's tie -->
+  <polygon class="trump-tie" points="160,220 180,220 170,250" />
+
+  <!-- Trump's mouth -->
+  <ellipse class="trump-mouth" cx="170" cy="190" rx="20" ry="10" />
+
+  <!-- Podium -->
+  <rect class="podium" x="50" y="270" width="250" height="100" />
+  <rect class="podium" x="70" y="280" width="210" height="80" />
+
+  <!-- Microphone -->
+  <circle class="mic" cx="170" cy="290" r="8" />
+  <rect class="mic" x="166" y="298" width="8" height="40" />
+
+  <!-- Speech text -->
+  <text class="speech-text" x="10" y="380">Donald Trump giving a speech.</text>
+</svg>
+</body>
+</html>
