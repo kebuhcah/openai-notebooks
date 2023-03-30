@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Language Diagram with D3.js</title>
+    <style>
+        svg {
+            border: 1px solid black;
+        }
+
+        .language {
+            fill: #1f77b4;
+        }
+
+        .group {
+            fill: #ff7f0e;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <!--
+    This example uses D3.js to create a force-directed graph with the 20 most spoken languages and their language groups. The languages and groups are represented as nodes, connected by links which indicate their relations. The graph is interactive, allowing you to click and drag the nodes around the canvas.
+
+    You can add more languages and groups by adding more objects to the `languagesData` and `languageGroupsData` arrays. D3.js will automatically handle the layout and appearance of the graph based on the provided data.
+    -->
+</head>
+
+<body>
+    <svg id="languagesDiagram" width="800" height="600"></svg>
+    <script>
+        const languagesData = [
+            { id: 'English', group: 'Indo-European' },
+            { id: 'Mandarin', group: 'Sino-Tibetan' },
+            { id: 'Hindi', group: 'Indo-European' },
+            { id: 'Spanish', group: 'Indo-European' },
+            { id: 'French', group: 'Indo-European' },
+            { id: 'Arabic', group: 'Afro-Asiatic' },
+            // ... add more languages here
+        ];
+
+        const languageGroupsData = [
+            { id: 'Indo-European' },
+            { id: 'Sino-Tibetan' },
+            { id: 'Afro-Asiatic' },
+            // ... add more language groups here
+        ];
+
+        const nodes = [...languagesData, ...languageGroupsData];
+
+        const links = languagesData.map(language => ({
+            source: language.id,
+            target: language.group,
+        }));
+
+        const simulation = d3.forceSimulation(nodes)
+            .force('link', d3.forceLink(links).distance(100))
+            .force('charge', d3.forceManyBody().strength(-300))
+            .force('center', d3.forceCenter(400, 300));
+
+        const svg = d3.select('#languagesDiagram');
+
+        const link = svg.selectAll('.link')
+            .data(links)
+            .join('line')
+            .attr('stroke', '#999');
+
+        const node = svg.selectAll('.node')
+            .data(nodes)
+            .join('g')
+            .attr('class', d => d.group ? 'group' : 'language')
+            .call(drag(simulation));
+
+        node.append('circle')
+            .attr('r', 20);
+
+        node.append('text')
+            .text(d => d.id)
+            .attr('text-anchor', 'middle')
+            .attr('dy', '0.35em');
+
+        simulation.on('tick', () => {
+            link
+                .attr('x1', d => d.source.x)
+                .attr('y1', d => d.source.y)
+                .attr('x2', d => d.target.x)
+                .attr('y2', d => d.target.y);
+
+            node
+                .attr('transform', d => `translate(${d.x}, ${d.y})`);
+        });
+
+        function drag(simulation) {
+            function dragstarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
+
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragended(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+
+            return d3.drag()
+                .on('start', dragstarted)
+                .on('drag', dragged)
+                .on('end', dragended);
+        }
+    </script>
+</body>
+
+</html>

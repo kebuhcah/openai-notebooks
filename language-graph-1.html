@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Diagram</title>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="languagesCanvas" width="800" height="600"></canvas>
+  <script>
+    const canvas = document.getElementById('languagesCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const languages = [
+      { name: 'English', x: 100, y: 100, group: 'Indo-European' },
+      { name: 'Mandarin', x: 200, y: 100, group: 'Sino-Tibetan' },
+      { name: 'Hindi', x: 300, y: 100, group: 'Indo-European' },
+      { name: 'Spanish', x: 400, y: 100, group: 'Indo-European' },
+      { name: 'French', x: 500, y: 100, group: 'Indo-European' },
+      { name: 'Arabic', x: 600, y: 100, group: 'Afro-Asiatic' },
+      // ... add more languages here
+    ];
+
+    const languageGroups = {
+      'Indo-European': { x: 200, y: 300 },
+      'Sino-Tibetan': { x: 400, y: 300 },
+      'Afro-Asiatic': { x: 600, y: 300 },
+      // ... add more language groups here
+    };
+
+    ctx.font = '14px Arial';
+
+    languages.forEach(language => {
+      ctx.beginPath();
+      ctx.arc(language.x, language.y, 20, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      ctx.fillText(language.name, language.x - ctx.measureText(language.name).width / 2, language.y + 5);
+
+      ctx.beginPath();
+      ctx.moveTo(language.x, language.y);
+      ctx.lineTo(languageGroups[language.group].x, languageGroups[language.group].y);
+      ctx.stroke();
+    });
+
+    Object.entries(languageGroups).forEach(([group, { x, y }]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      ctx.fillText(group, x - ctx.measureText(group).width / 2, y + 5);
+    });
+  </script>
+</body>
+</html>
