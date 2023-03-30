@@ -17,17 +17,16 @@
         .group {
             fill: #ff7f0e;
         }
-    </style>
-    <script src="https://d3js.org/d3.v6.min.js"></script>
-    <!--
-    This example uses D3.js to create a force-directed graph with the 20 most spoken languages and their language groups. The languages and groups are represented as nodes, connected by links which indicate their relations. The graph is interactive, allowing you to click and drag the nodes around the canvas.
 
-    You can add more languages and groups by adding more objects to the `languagesData` and `languageGroupsData` arrays. D3.js will automatically handle the layout and appearance of the graph based on the provided data.
-    -->
+        text {
+            fill: #000;
+        }
+    </style>
 </head>
 
 <body>
     <svg id="languagesDiagram" width="800" height="600"></svg>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
     <script>
         const languagesData = [
             { id: 'English', group: 'Indo-European' },
@@ -49,13 +48,13 @@
         const nodes = [...languagesData, ...languageGroupsData];
 
         const links = languagesData.map(language => ({
-            source: language.id,
-            target: language.group,
+            source: nodes.findIndex(node => node.id === language.id),
+            target: nodes.findIndex(node => node.id === language.group),
         }));
 
         const simulation = d3.forceSimulation(nodes)
-            .force('link', d3.forceLink(links).distance(100))
-            .force('charge', d3.forceManyBody().strength(-300))
+            .force('link', d3.forceLink(links).distance(50))
+            .force('charge', d3.forceManyBody().strength(-100))
             .force('center', d3.forceCenter(400, 300));
 
         const svg = d3.select('#languagesDiagram');
